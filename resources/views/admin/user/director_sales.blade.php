@@ -41,7 +41,13 @@ $ParentRouteName = 'user';
     @include('includes.left-sidebar')
 @stop
 @section('content')
-
+@php
+if($director->share === null){
+    $share = 0;
+}else{
+     $share = $director->share;
+}
+@endphp
     <section class="content">
         <div class="container-fluid">
 
@@ -60,7 +66,7 @@ $ParentRouteName = 'user';
                         <div class="header">
                         </div>
                             <div class="body table-responsive">
-                            <h3>Sales List For : <span>{{ $director->name}}</span> <small class="text-warning">Commision: {{ ($director->share)*100}}&nbsp;%</small></h3>
+                            <h3>Sales List For : <span>{{ $director->name}}</span> <small class="text-warning">Commision: {{ ($share)*100}}&nbsp;%</small></h3>
                                 <table class="table table-hover table-bordered table-sm">
                                     <thead>
                                     <tr>
@@ -73,18 +79,19 @@ $ParentRouteName = 'user';
                                     </tr>
                                     </thead>
                                     <tbody>
-
                                     <?php $i = 1;?>
                                     @foreach($director_details as $d)
                                         <tr>
                                             <td>{{ $d->product_id }}</td>
                                         @php
-                                            $branch_name = App\Branch::where('id',$d->branch_id)->pluck('name');
+                                            $branch = App\Branch::where('id',$d->branch_id)->first();
+
+                                            $branch_name = is_null($branch) ? " " : $branch->name;
                                         @endphp
-                                            <td>{{ $branch_name[0] }}</td>
+                                            <td>{{ $branch_name }}</td>
                                             <td>{{$d->sells_date}}</td>
                                             <td>{{$d->net_sells_price}}</td>
-                                            <td>{{($d->net_sells_price)* ($director->share)}}</td>
+                                            <td>{{($d->net_sells_price)* ($share)}}</td>
                                         </tr>
                                     <?php $i++;?>
                                     @endforeach
