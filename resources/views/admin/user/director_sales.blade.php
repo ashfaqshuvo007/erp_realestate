@@ -5,27 +5,27 @@
 
 <?php
 
-$moduleName = " Manage Directors";
-$createItemName = "Create" . $moduleName;
+$moduleName = "Directors";
+$createItemName = $moduleName . "Sales";
 
 $breadcrumbMainName = $moduleName;
-$breadcrumbCurrentName = " Director List";
+$breadcrumbCurrentName = " Director Sales List";
 
-$breadcrumbMainIcon = "fas fa-user";
+$breadcrumbMainIcon = "fas fa-dolly";
 $breadcrumbCurrentIcon = "archive";
 
 $ModelName = 'App\User';
 $ParentRouteName = 'user';
 
-$all = config('role_manage.User.All');
-$create = config('role_manage.User.Create');
-$delete = config('role_manage.User.Delete');
-$edit = config('role_manage.User.Edit');
-$pdf = config('role_manage.User.Pdf');
-$permanently_delete = config('role_manage.User.PermanentlyDelete');
-$restore = config('role_manage.User.Restore');
-$show = config('role_manage.User.Show');
-$trash_show = config('role_manage.User.TrashShow');
+// $all = config('role_manage.User.All');
+// $create = config('role_manage.User.Create');
+// $delete = config('role_manage.User.Delete');
+// $edit = config('role_manage.User.Edit');
+// $pdf = config('role_manage.User.Pdf');
+// $permanently_delete = config('role_manage.User.PermanentlyDelete');
+// $restore = config('role_manage.User.Restore');
+// $show = config('role_manage.User.Show');
+// $trash_show = config('role_manage.User.TrashShow');
 
 ?>
 
@@ -48,7 +48,7 @@ $trash_show = config('role_manage.User.TrashShow');
             <ol class="breadcrumb breadcrumb-col-cyan pull-right">
                 <li><a href="{{ route('dashboard') }}"><i class="material-icons">home</i> Home</a></li>
                 <li><a href="{{ route($ParentRouteName) }}"><i
-                                class="{{ $breadcrumbMainIcon  }}"></i>{{ $breadcrumbMainName  }}</a></li>
+                                class="{{ $breadcrumbMainIcon  }}"></i> {{ $breadcrumbMainName  }}</a></li>
                 <li class="active"><i
                             class="material-icons">{{ $breadcrumbCurrentIcon }}</i>{{ $breadcrumbCurrentName }}</li>
             </ol>
@@ -60,63 +60,41 @@ $trash_show = config('role_manage.User.TrashShow');
                         <div class="header">
                         </div>
                             <div class="body table-responsive">
+                            <h3>Sales List For : <span>{{ $director->name}}</span> <small class="text-warning">Commision: {{ ($director->share)*100}}&nbsp;%</small></h3>
                                 <table class="table table-hover table-bordered table-sm">
                                     <thead>
                                     <tr>
-                                        <th>Director Name</th>
-                                        <th>Email</th>
-                                        <th>Sell Commision</th>
-                                        <th>Action</th>
 
+                                        <th>Product</th>
+                                        <th>Product Branch</th>
+                                        <th>Product Sell Date</th>
+                                        <th>Product Net Sell Price</th>
+                                        <th>Director Commision</th>
                                     </tr>
                                     </thead>
                                     <tbody>
 
                                     <?php $i = 1;?>
-                                    @foreach($directors as $director)
+                                    @foreach($director_details as $d)
                                         <tr>
-                                            <td>{{ $director->name }}</td>
-                                            <td>{{ $director->email }}</td>
-                                            <?php
-if (is_null($director->share)) {
-    $share = 'NULL';
-} else {
-    $share = ($director->share) * 100;
-}
-
-?>
-                                            <td>
-                                                {{  $share }}&nbsp;%
-                                            </td>
-
-                                            <td class="tdTrashAction">
-                                                <a @if ($edit==0)
-
-                                                        class="dis-none"
-
-                                                   @endif class="btn btn-xs btn-info waves-effect"
-                                                   href="{{ route($ParentRouteName.'.edit_director',['id'=>$director->user_id]) }}"
-
-                                                   data-toggle="tooltip"
-                                                   data-placement="top" title="Edit"><i
-                                                            class="material-icons">mode_edit</i></a>
-                                                <a class="btn btn-xs btn-warning waves-effect"
-                                                   href="{{ route($ParentRouteName.'.director_sales',['id'=>$director->user_id]) }}"
-
-                                                   data-toggle="tooltip"
-                                                   data-placement="top" title="Sales by director"><i
-                                                            class="fas fa-dolly"></i></a>
-
-                                            </td>
+                                            <td>{{ $d->product_id }}</td>
+                                        @php
+                                            $branch_name = App\Branch::where('id',$d->branch_id)->pluck('name');
+                                        @endphp
+                                            <td>{{ $branch_name[0] }}</td>
+                                            <td>{{$d->sells_date}}</td>
+                                            <td>{{$d->net_sells_price}}</td>
+                                            <td>{{($d->net_sells_price)* ($director->share)}}</td>
                                         </tr>
                                     <?php $i++;?>
                                     @endforeach
                                     <thead>
                                     <tr>
-                                        <th>Director Name</th>
-                                        <th>Email</th>
-                                        <th>Sell Commision</th>
-                                        <th>Action</th>
+                                        <th>Product</th>
+                                        <th>Product Branch</th>
+                                        <th>Product Sell Date</th>
+                                        <th>Product Net Sell Price</th>
+                                        <th>Director Commision</th>
                                     </tr>
                                     </thead>
 

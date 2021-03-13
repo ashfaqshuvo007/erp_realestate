@@ -135,6 +135,11 @@ Route::group(['middleware' => 'auth'], function () {
         'as' => 'user.update_director',
     ]);
 
+    Route::get('/user/director/sales/{id}', [
+        'uses' => 'UsersController@director_sales',
+        'as' => 'user.director_sales',
+    ]);
+
     //    Settings
 
     Route::get('/settings/general', [

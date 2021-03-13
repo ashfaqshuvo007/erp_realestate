@@ -324,4 +324,20 @@ class UsersController extends Controller
         }
 
     }
+
+    //Sales Done by Directors
+    public function director_sales($id)
+    {
+        $director = DB::table('directors')->where('user_id', $id)->first();
+        $director_details = DB::table('directors')
+            ->leftJoin('sells', 'directors.user_id', '=', 'sells.director_id')
+            ->leftJoin('products', 'sells.product_id', '=', 'products.product_unique_id')
+            ->where('directors.user_id', $id)
+            ->get();
+
+        // dd($director_details);
+        return view($this->parentView . '.director_sales')
+            ->with('director', $director)
+            ->with('director_details', $director_details);
+    }
 }
