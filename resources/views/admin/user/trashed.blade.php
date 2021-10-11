@@ -16,7 +16,6 @@ $breadcrumbCurrentIcon = "archive";
 $ModelName = 'App\User';
 $ParentRouteName = 'user';
 
-
 $all = config('role_manage.User.All');
 $create = config('role_manage.User.Create');
 $delete = config('role_manage.User.Delete');
@@ -130,7 +129,7 @@ $trash_show = config('role_manage.User.TrashShow');
                                         </thead>
                                         <tbody>
 
-                                        <?php $i = 1; ?>
+                                        <?php $i = 1;?>
                                         @foreach($items as $item)
 
                                             <tr>
@@ -141,9 +140,9 @@ $trash_show = config('role_manage.User.TrashShow');
                                                     <label for="md_checkbox_{{ $i }}"></label>
                                                 </th>
 
-                                                <td>{{ $item->name }}</td>
-                                                <td>{{ $item->email }}</td>
-                                                <td>{{ App\RoleManage::find($item->id)->name }}</td>
+                                                <td>{{ $item->name ?? ''}}</td>
+                                                <td>{{ $item->email ?? ''}}</td>
+                                                <td>{{ App\RoleManage::find($item->id)->name ?? ''}}</td>
 
                                                 <td class="tdAction ">
                                                     <a @if ($restore==0)
@@ -172,7 +171,7 @@ $trash_show = config('role_manage.User.TrashShow');
 
                                                 </td>
                                             </tr>
-                                        <?php $i++; ?>
+                                        <?php $i++;?>
                                         @endforeach
                                         <thead>
                                         <tr>

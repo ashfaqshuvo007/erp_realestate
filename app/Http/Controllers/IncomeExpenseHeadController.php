@@ -2,25 +2,18 @@
 
 namespace App\Http\Controllers;
 
-
 use App\IncomeExpenseHead;
-use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\Session;
 use Barryvdh\DomPDF\Facade as PDF;
-use App\Http\Controllers\RoleManageController;
-use App\Setting;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class IncomeExpenseHeadController extends Controller
 {
-
 
 //    Important properties
     public $parentModel = IncomeExpenseHead::class;
     public $parentRoute = 'income_expense_head';
     public $parentView = "admin.income-expense-head";
-
 
     /**
      * Display a listing of the resource.
@@ -136,7 +129,6 @@ class IncomeExpenseHeadController extends Controller
 
         $items->updated_by = \Auth::user()->email;
 
-
         $items->save();
         Session::flash('success', "Update Successfully");
         return redirect()->route($this->parentRoute);
@@ -153,18 +145,17 @@ class IncomeExpenseHeadController extends Controller
         }
 
         $now = new \DateTime();
-        $date = $now->format(Config('settings.date_format').' h:i:s');
+        $date = $now->format(Config('settings.date_format') . ' h:i:s');
 
         $extra = array(
             'current_date_time' => $date,
-            'module_name' => 'Ledger Name'
+            'module_name' => 'Ledger Name',
         );
 
         $pdf = PDF::loadView($this->parentView . '.pdf', ['items' => $item, 'extra' => $extra])->setPaper('a4', 'landscape');
         //return $pdf->stream('invoice.pdf');
         return $pdf->download($extra['current_date_time'] . '_' . $extra['module_name'] . '.pdf');
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -186,24 +177,21 @@ class IncomeExpenseHeadController extends Controller
             return redirect()->back();
         }
 
-
         $items->deleted_by = \Auth::user()->email;
         $items->save();
-
 
         $items->delete();
         Session::flash('success', "Successfully Trashed");
         return redirect()->back();
     }
 
-
     public function trashed()
     {
 
         $items = $this->parentModel::onlyTrashed()->paginate(60);
+        // dd($items);
         return view($this->parentView . '.trashed')->with("items", $items);
     }
-
 
     public function restore($id)
     {
@@ -222,11 +210,10 @@ class IncomeExpenseHeadController extends Controller
     {
         $items = $this->parentModel::withTrashed()->where('id', $id)->first();
 
-        if (count($this->parentModel::withTrashed()->find($id)->Transaction) > 0) {
-            Session::flash('error', "You can not delete it.Because it has Some Transaction");
-            return redirect()->back();
-        }
-
+        // if (count($this->parentModel::withTrashed()->find($id)->Transaction) > 0) {
+        //     Session::flash('error', "You can not delete it.Because it has Some Transaction");
+        //     return redirect()->back();
+        // }
 
         $items->forceDelete();
 
@@ -238,7 +225,7 @@ class IncomeExpenseHeadController extends Controller
     {
 
         $request->validate([
-            'search' => 'min:1'
+            'search' => 'min:1',
         ]);
 
         $search = $request["search"];
@@ -262,9 +249,8 @@ class IncomeExpenseHeadController extends Controller
     {
 
         $request->validate([
-            'search' => 'min:1'
+            'search' => 'min:1',
         ]);
-
 
         $search = $request["search"];
         $items = $this->parentModel::where('name', 'like', '%' . $search . '%')
@@ -286,13 +272,12 @@ class IncomeExpenseHeadController extends Controller
 
     }
 
-
 //    Fixed Method for all
     public function activeAction(Request $request)
     {
 
         $request->validate([
-            'items' => 'required'
+            'items' => 'required',
         ]);
 
         if ($request->apply_comand_top == 3 || $request->apply_comand_bottom == 3) {
@@ -320,7 +305,7 @@ class IncomeExpenseHeadController extends Controller
     {
 
         $request->validate([
-            'items' => 'required'
+            'items' => 'required',
         ]);
 
         if ($request->apply_comand_top == 1 || $request->apply_comand_bottom == 1) {
@@ -343,6 +328,5 @@ class IncomeExpenseHeadController extends Controller
         }
         return redirect()->back();
     }
-
 
 }

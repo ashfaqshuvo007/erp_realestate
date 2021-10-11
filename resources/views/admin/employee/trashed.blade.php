@@ -17,7 +17,6 @@ $breadcrumbCurrentIcon = "archive";
 $ModelName = 'App\employee';
 $ParentRouteName = 'employee';
 
-
 $all = config('role_manage.Employee.All');
 $create = config('role_manage.Employee.Create');
 $delete = config('role_manage.Employee.Delete');
@@ -133,7 +132,7 @@ $trash_show = config('role_manage.Employee.TrashShow');
                                         </thead>
                                         <tbody>
 
-                                        <?php $i = 1; ?>
+                                        <?php $i = 1;?>
                                         @foreach($items as $item)
 
                                             <tr>
@@ -144,12 +143,12 @@ $trash_show = config('role_manage.Employee.TrashShow');
                                                     <label for="md_checkbox_{{ $i }}"></label>
                                                 </th>
 
-                                                <td>{{ $item->name }}</td>
-                                                <td>{{ $item->phone }}</td>
-                                                <td>{{ $item->email }}</td>
-                                                <td>{{ $item->position }}</td>
-                                                <td>{{ $item->department }}</td>
-                                                <td>{{ $item->address }}</td>
+                                                <td>{{ $item->name ?? ''}}</td>
+                                                <td>{{ $item->phone ?? '' }}</td>
+                                                <td>{{ $item->email ?? ''}}</td>
+                                                <td>{{ $item->position ?? '' }}</td>
+                                                <td>{{ $item->department ?? '' }}</td>
+                                                <td>{{ $item->address ?? ''}}</td>
 
                                                 <td class="tdAction">
                                                     <a @if ($restore==0)
@@ -180,7 +179,7 @@ $trash_show = config('role_manage.Employee.TrashShow');
 
                                                 </td>
                                             </tr>
-                                        <?php $i++; ?>
+                                        <?php $i++;?>
                                         @endforeach
                                         <thead>
                                         <tr>

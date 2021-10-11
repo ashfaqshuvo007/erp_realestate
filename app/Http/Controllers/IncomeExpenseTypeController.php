@@ -3,22 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\IncomeExpenseType;
-use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\Session;
 use Barryvdh\DomPDF\Facade as PDF;
-use App\Http\Controllers\RoleManageController;
-use App\Setting;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class IncomeExpenseTypeController extends Controller
 {
-
 
 //    Important properties
     public $parentModel = IncomeExpenseType::class;
     public $parentRoute = 'income_expense_type';
     public $parentView = "admin.income-expense-type";
-
 
     /**
      * Display a listing of the resource.
@@ -125,7 +120,6 @@ class IncomeExpenseTypeController extends Controller
 
         $items->updated_by = \Auth::user()->email;
 
-
         $items->save();
         Session::flash('success', "Update Successfully");
         return redirect()->route($this->parentRoute);
@@ -142,18 +136,17 @@ class IncomeExpenseTypeController extends Controller
         }
 
         $now = new \DateTime();
-        $date = $now->format(Config('settings.date_format').' h:i:s');
+        $date = $now->format(Config('settings.date_format') . ' h:i:s');
 
         $extra = array(
             'current_date_time' => $date,
-            'module_name' => 'Ledger Type'
+            'module_name' => 'Ledger Type',
         );
 
         $pdf = PDF::loadView($this->parentView . '.pdf', ['items' => $item, 'extra' => $extra])->setPaper('a4', 'landscape');
         //return $pdf->stream('invoice.pdf');
         return $pdf->download($extra['current_date_time'] . '_' . $extra['module_name'] . '.pdf');
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -170,7 +163,7 @@ class IncomeExpenseTypeController extends Controller
             return redirect()->back();
         }
 
-        if (count(IncomeExpenseType::find($id)->IncomeExpenseHeads) > 0) {  // Child has or not
+        if (count(IncomeExpenseType::find($id)->IncomeExpenseHeads) > 0) { // Child has or not
             Session::flash('error', "You can not delete it.Because it has ledger items");
             return redirect()->back();
         }
@@ -182,14 +175,12 @@ class IncomeExpenseTypeController extends Controller
         return redirect()->back();
     }
 
-
     public function trashed()
     {
 
         $items = $this->parentModel::onlyTrashed()->paginate(60);
         return view($this->parentView . '.trashed')->with("items", $items);
     }
-
 
     public function restore($id)
     {
@@ -203,15 +194,15 @@ class IncomeExpenseTypeController extends Controller
     public function kill($id)
     {
         $items = $this->parentModel::withTrashed()->where('id', $id)->first();
-
-        if (count(IncomeExpenseType::find($id)->IncomeExpenseHeads) > 0) {  // Child has or not
-            Session::flash('error', "You can not delete it.Because it has ledger items");
-            return redirect()->back();
-        }
+        // dd(IncomeExpenseType::find($id)->IncomeExpenseHeads);
+        // if (count(IncomeExpenseType::find($id)->IncomeExpenseHeads) > 0) { // Child has or not
+        //     Session::flash('error', "You can not delete it.Because it has ledger items");
+        //     return redirect()->back();
+        // }
 
         $items->forceDelete();
 
-        Session::flash('success', 'Permanently Delete');
+        Session::flash('success', 'Permanently Deleted');
         return redirect()->back();
     }
 
@@ -219,7 +210,7 @@ class IncomeExpenseTypeController extends Controller
     {
 
         $request->validate([
-            'search' => 'min:1'
+            'search' => 'min:1',
         ]);
 
         $search = $request["search"];
@@ -236,9 +227,8 @@ class IncomeExpenseTypeController extends Controller
     {
 
         $request->validate([
-            'search' => 'min:1'
+            'search' => 'min:1',
         ]);
-
 
         $search = $request["search"];
         $items = $this->parentModel::where('name', 'like', '%' . $search . '%')
@@ -252,13 +242,12 @@ class IncomeExpenseTypeController extends Controller
 
     }
 
-
 //    Fixed Method for all
     public function activeAction(Request $request)
     {
 
         $request->validate([
-            'items' => 'required'
+            'items' => 'required',
         ]);
 
         if ($request->apply_comand_top == 3 || $request->apply_comand_bottom == 3) {
@@ -286,7 +275,7 @@ class IncomeExpenseTypeController extends Controller
     {
 
         $request->validate([
-            'items' => 'required'
+            'items' => 'required',
         ]);
 
         if ($request->apply_comand_top == 1 || $request->apply_comand_bottom == 1) {
@@ -309,6 +298,5 @@ class IncomeExpenseTypeController extends Controller
         }
         return redirect()->back();
     }
-
 
 }

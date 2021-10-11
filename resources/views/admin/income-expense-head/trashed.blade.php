@@ -17,8 +17,6 @@ $breadcrumbCurrentIcon = "archive";
 $ModelName = 'App\IncomeExpenseHead';
 $ParentRouteName = 'income_expense_head';
 
-
-
 $all = config('role_manage.LedgerName.All');
 $create = config('role_manage.LedgerName.Create');
 $delete = config('role_manage.LedgerName.Delete');
@@ -28,8 +26,6 @@ $permanently_delete = config('role_manage.LedgerName.PermanentlyDelete');
 $restore = config('role_manage.LedgerName.Restore');
 $show = config('role_manage.LedgerName.Show');
 $trash_show = config('role_manage.LedgerName.TrashShow');
-
-
 
 ?>
 @section('title')
@@ -138,7 +134,7 @@ $trash_show = config('role_manage.LedgerName.TrashShow');
                                         </thead>
                                         <tbody>
 
-                                        <?php $i = 1; ?>
+                                        <?php $i = 1;?>
                                         @foreach($items as $item)
 
 
@@ -150,13 +146,13 @@ $trash_show = config('role_manage.LedgerName.TrashShow');
                                                     <label for="md_checkbox_{{ $i }}"></label>
                                                 </th>
 
-                                                <td>{{ $item->name }}</td>
+                                                <td>{{ $item->name ?? '' }}</td>
                                                 <td>{{ App\IncomeExpenseHead::onlyTrashed()->find($item->id)
-                                                    ->IncomeExpenseType->name }}</td>
+                                                    ->IncomeExpenseType->name ?? '' }}</td>
                                                 <td>{{ App\IncomeExpenseHead::onlyTrashed()->find($item->id)
-                                                    ->IncomeExpenseGroup->name }}</td>
-                                                <td>{{ $item->unit }}</td>
-                                                <td>{{ $item->type }}</td>
+                                                    ->IncomeExpenseGroup->name ?? ''}}</td>
+                                                <td>{{ $item->unit ?? ''}}</td>
+                                                <td>{{ $item->type ?? '' }}</td>
 
                                                 <td class="tdAction">
                                                     <a @if ($restore==0)
@@ -185,7 +181,7 @@ $trash_show = config('role_manage.LedgerName.TrashShow');
 
                                                 </td>
                                             </tr>
-                                        <?php $i++; ?>
+                                        <?php $i++;?>
                                         @endforeach
                                         <thead>
                                         <tr>
