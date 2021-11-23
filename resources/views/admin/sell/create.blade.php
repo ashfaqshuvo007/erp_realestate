@@ -140,9 +140,9 @@ $ParentRouteName = 'sell';
                                                         <option value="0">Select Director Name</option>
 
                                                         @foreach( $directors as $d )
-                                                            <option @if ( $d->user_id == old('director_id' ) )
+                                                            <option @if ( $d->id == old('director_id' ) )
                                                                     selected
-                                                                    @endif value="{{ $d->user_id  }}">{{ $d->name  }}</option>
+                                                                    @endif value="{{ $d->id  }}">{{ $d->name  }}</option>
                                                         @endforeach
 
                                                     </select>

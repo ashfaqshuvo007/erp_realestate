@@ -167,8 +167,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="phone_number" class="col-sm-2 control-label">Last
-                                                    Name</label>
+                                                <label for="phone_number" class="col-sm-2 control-label">Phone Number</label>
                                                 <div class="col-sm-10">
                                                     <div class="form-line">
                                                         <input type="text" class="form-control" id="phone_number"
@@ -344,5 +343,3 @@
     </section>
 
 @stop
-
-

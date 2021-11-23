@@ -81,12 +81,21 @@ $ParentRouteName = 'user';
                                                 </div>
                                             </div>
                                         </div>
+                                        <input type="hidden" name="id" value="{{ $item->id }}">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
+                                            <div class="form-group form-float">
+                                                <div class="form-line">
+                                                    <input name="share" type="text" value="{{ $item->share}}" class="form-control ">
+                                                    <label class="form-label">Sell Commision (%)</label>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
                                             <div class="form-group form-float">
                                                 <div class="form-line">
-                                                    <input name="share" type="text" value="{{($item->share)*100}}" class="form-control ">
-                                                    <label class="form-label">Sell Commision (%)</label>
+                                                    <input name="agent_share" type="text" value="{{ $item->agent_share}}" class="form-control ">
+                                                    <label class="form-label">Agent Commision (%)</label>
                                                 </div>
                                             </div>
                                         </div>

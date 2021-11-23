@@ -12,11 +12,9 @@
 
 
     <?php
-        $transaction = new \App\Transaction();
-    ?>
-
-
-    <div class="mid">
+$transaction = new \App\Transaction();
+?>
+    <div class="mid mb-0">
         <div class="row">
             <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12">
             <br>
@@ -27,17 +25,14 @@
             <hr>
             </div>
         </div>
-        
+
     </div>
 
-    
-    {{-- Row Colomn Using Table start --}}
 
-       
+    <!-- {{-- Row Colomn Using Table start --}} -->
 
-    <table class="table table-bordered">
+    <table class="table table-bordered mt-0">
         <tbody>
-
             <tr>
                 <td>
                     <table class="table table-striped table-bordered table-sm">
@@ -81,7 +76,7 @@
                                 <td>NID</td>
                                 <td>{{ $infos['customer']->nid }}</td>
                             </tr>
-                    
+
                         </tbody>
                     </table>
 
@@ -118,7 +113,7 @@
                                 <td>Apt Size</td>
                                 <td>{{  $infos['product']->flat_size  }}</td>
                             </tr>
-                            
+
                             <tr>
                                 <td>Unite Price</td>
                                 <td>{{ $transaction->convert_money_format( $infos['product']->unite_price)  }}</td>
@@ -201,14 +196,14 @@
                                 <td>Total Apt Value with Additional Charge</td>
                                 <td>{{ $transaction->convert_money_format($infos['product']->net_sells_price) }}</td>
                             </tr>
-                            
+
                         </tbody>
                     </table>
-                    
+
 
 
                     <table class="table table-striped table-bordered table-sm">
-                    
+
                     <thead>
                         <tr>
                             <th class="text-center" colspan="2" scope="col">Project Information</th>
@@ -241,8 +236,7 @@
         </tbody>
     </table>
 
-
-    <table class="table table-bordered">
+    <table class="table table-bordered mt-0">
         <tbody>
 
             <tr>
@@ -262,7 +256,7 @@
                                 <th class="text-center" scope="col">Date</th>
                                 <th class="text-center" scope="col">Payable Amount</th>
                             </tr>
-                            
+
                         </thead>
                         <tbody>
 
@@ -284,8 +278,8 @@
                                 <th class="text-right" colspan="2" scope="col">Total</th>
                                 <th  scope="col">{{ $transaction->convert_money_format( $total_payable_amount) }}</th>
                             </tr>
-                            
-                        </tbody>    
+
+                        </tbody>
                     </table>
 
                 </td>
@@ -318,7 +312,7 @@
                             @endphp
 
                             @foreach ($infos['actual_received_info'] as $actual_received )
-                            
+
                             @php
                                 $total_received_amount += $actual_received->received_amount;
                                 $total_adjustment_amount += $actual_received->adjustment;
@@ -345,22 +339,22 @@
 
                             <tr>
                                 <th class="text-right" scope="col" colspan="2">Total</th>
-                                
+
                                 <th  scope="col">{{ $transaction->convert_money_format( $total_received_amount) }}</th>
                                 <th  scope="col">{{ $transaction->convert_money_format( $total_adjustment_amount) }}</th>
                                 <th  scope="col">{{ $transaction->convert_money_format( $total_actual_amount) }}</th>
 
                                 <th  scope="col" colspan="4"></th>
                             </tr>
-                            
+
                             <tr>
                                 <th class="text-right" scope="col" colspan="4"><h5>Total Recieved Amount : {{ $transaction->convert_money_format( $total_actual_amount) }}</h5> </th>
-                                
+
                                 <th  scope="col" colspan="5"> <h5>Due Amount : {{ $transaction->convert_money_format( $due_amount) }} </h5></th>
                             </tr>
 
 
-                        </tbody>    
+                        </tbody>
                     </table>
 
                 </td>
@@ -368,10 +362,10 @@
         </tbody>
     </table>
 
+<!--
+    {{-- Row Colomn Using Table End --}} -->
 
-    {{-- Row Colomn Using Table End --}}
 
 
 
-        
 @stop

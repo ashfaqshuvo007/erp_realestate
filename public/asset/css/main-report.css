@@ -1,4 +1,3 @@
-
 .page-break {
     page-break-after: always;
 }
@@ -9,36 +8,41 @@
     overflow-x: hidden;
 }
 
-p, h1, h2, h3, h4, h5, h6 {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     margin: 0px !important;
     padding: 0px !important;
 }
 
-.font-s-18{
+.font-s-18 {
     font-size: 18px;
 }
-.font-s-16{
+
+.font-s-16 {
     font-size: 16px;
 }
 
-.font-s-20{
+.font-s-20 {
     font-size: 20px;
 }
 
-.font-s-25{
+.font-s-25 {
     font-size: 25px;
 }
 
-.font-w-b{
+.font-w-b {
     font-weight: bold;
 }
 
-.padding-t-8{
+.padding-t-8 {
     padding-top: 8px;
 }
 
-.margin-t-50{
+.margin-t-50 {
     margin-top: 50px;
 }
-
-

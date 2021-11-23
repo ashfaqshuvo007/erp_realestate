@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Director;
 use App\Profile;
 use App\User;
 use DB;
@@ -64,11 +65,11 @@ class UsersController extends Controller
 
         //For director send data to manage directors table
         if ($request->role_manage_id == 2) {
-            DB::table('directors')->insert([
-                'user_id' => $user->id,
-                'name' => $request->name,
-                'email' => $request->email,
-            ]);
+            $director = new Director();
+            $director->user_id = $user->id;
+            $director->name = $request->name;
+            $director->email = $request->email;
+            $director->save();
 
         }
 
@@ -164,6 +165,11 @@ class UsersController extends Controller
         }
         $user = User::find($id);
         $user->delete();
+
+        if ($user->role_manage_id == 2) {
+            Director::where('user_id', $user->id)->delete();
+        }
+
         Session::flash('success', "Successfully Trashed");
         return redirect()->back();
     }
@@ -300,22 +306,23 @@ class UsersController extends Controller
     //Edit Director
     public function edit_director($id)
     {
-        $director = DB::table('directors')->where('user_id', $id)->first();
+        $director = DB::table('directors')->where('id', $id)->first();
         return view($this->parentView . '.edit_director')->with('item', $director);
     }
 
     //Update
     public function update_director(Request $request)
     {
-        $share = ($request->share) / 100;
-        $affected = DB::table('directors')
-            ->where('user_id', $request->user_id)
-            ->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'share' => $share,
-            ]);
-        if (!empty($affected)) {
+        $director = Director::where('id', $request->id)->first();
+
+        $director->name = $request->name;
+        $director->email = $request->email;
+        $director->share = $request->share;
+        $director->agent_share = $request->agent_share;
+
+        $affected_id = $director->save();
+
+        if (!empty($affected_id)) {
             Session::flash('success', "Update Successfully");
             return redirect()->route($this->parentRoute . ".manage_directors");
         } else {
@@ -328,16 +335,13 @@ class UsersController extends Controller
     //Sales Done by Directors
     public function director_sales($id)
     {
-        $director = DB::table('directors')->where('user_id', $id)->first();
-        $director_details = DB::table('directors')
-            ->leftJoin('sells', 'directors.user_id', '=', 'sells.director_id')
-            ->leftJoin('products', 'sells.product_id', '=', 'products.product_unique_id')
-            ->where('directors.user_id', $id)
+        $director = DB::table('directors')->where('id', $id)->first();
+        $director_sales = DB::table('sells')
+            ->where('sells.director_id', $id)
             ->get();
 
-        // dd($director_details);
         return view($this->parentView . '.director_sales')
             ->with('director', $director)
-            ->with('director_details', $director_details);
+            ->with('director_sales', $director_sales);
     }
 }

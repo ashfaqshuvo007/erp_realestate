@@ -42,10 +42,23 @@ $ParentRouteName = 'user';
 @stop
 @section('content')
 @php
+
 if($director->share === null){
     $share = 0;
+    $director_share = 0;
+    $agent_share = 0;
+
 }else{
-     $share = $director->share;
+    if($director->agent_share === null){
+        $director_share = $director->share;
+        $agent_share = 0;
+        $share = $director->share;
+    }else{
+       $director_share = $director->share - $director->agent_share;
+       $agent_share = $director->agent_share;
+       $share = $director->share;
+    }
+
 }
 @endphp
     <section class="content">
@@ -66,7 +79,7 @@ if($director->share === null){
                         <div class="header">
                         </div>
                             <div class="body table-responsive">
-                            <h3>Sales List For : <span>{{ $director->name}}</span> <small class="text-warning">Commision: {{ ($share)*100}}&nbsp;%</small></h3>
+                            <h3>Sales List For : <span>{{ $director->name}}</span> <small class="text-warning">Total Commision: {{ ($share)}}&nbsp;% &nbsp;Director Share: {{$director_share }}&nbsp;% &nbsp; Agent Share: {{$agent_share }} %</small></h3>
                                 <table class="table table-hover table-bordered table-sm">
                                     <thead>
                                     <tr>
@@ -76,22 +89,27 @@ if($director->share === null){
                                         <th>Product Sell Date</th>
                                         <th>Product Net Sell Price</th>
                                         <th>Director Commision</th>
+                                        <th>Agent Name</th>
+                                        <th>Agent Commision</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <?php $i = 1;?>
-                                    @foreach($director_details as $d)
+                                    @foreach($director_sales as $d)
                                         <tr>
                                             <td>{{ $d->product_id }}</td>
                                         @php
                                             $branch = App\Branch::where('id',$d->branch_id)->first();
-
+                                            $employee = App\Employee::where('id', $d->employee_id)->first();
+                                            $product_details = App\Product::where('id',$d->product_id)->first();
                                             $branch_name = is_null($branch) ? " " : $branch->name;
                                         @endphp
                                             <td>{{ $branch_name }}</td>
                                             <td>{{$d->sells_date}}</td>
-                                            <td>{{$d->net_sells_price}}</td>
-                                            <td>{{($d->net_sells_price)* ($share)}}</td>
+                                            <td>{{$product_details->net_sells_price}}</td>
+                                            <td>{{($product_details->net_sells_price)* ($director_share/100)}}</td>
+                                            <td>{{ $employee->name }}</td>
+                                            <td>{{($product_details->net_sells_price)* ($agent_share/100)}}</td>
                                         </tr>
                                     <?php $i++;?>
                                     @endforeach
@@ -102,6 +120,8 @@ if($director->share === null){
                                         <th>Product Sell Date</th>
                                         <th>Product Net Sell Price</th>
                                         <th>Director Commision</th>
+                                        <th>Agent Name</th>
+                                        <th>Agent Commision</th>
                                     </tr>
                                     </thead>
 

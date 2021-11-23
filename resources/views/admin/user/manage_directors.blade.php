@@ -81,12 +81,12 @@ $trash_show = config('role_manage.User.TrashShow');
 if (is_null($director->share)) {
     $share = 'NULL';
 } else {
-    $share = ($director->share) * 100;
+    $share = $director->share . "%";
 }
-
+$director_sales = \App\Sell::where('director_id', $director->id)->get()->toArray();
 ?>
                                             <td>
-                                                {{  $share }}&nbsp;%
+                                                {{  $share }}
                                             </td>
 
                                             <td class="tdTrashAction">
@@ -95,18 +95,20 @@ if (is_null($director->share)) {
                                                         class="dis-none"
 
                                                    @endif class="btn btn-xs btn-info waves-effect"
-                                                   href="{{ route($ParentRouteName.'.edit_director',['id'=>$director->user_id]) }}"
+                                                   href="{{ route($ParentRouteName.'.edit_director',['id'=>$director->id]) }}"
 
                                                    data-toggle="tooltip"
                                                    data-placement="top" title="Edit"><i
                                                             class="material-icons">mode_edit</i></a>
+
+                                                @if((count($director_sales) > 0))
                                                 <a class="btn btn-xs btn-warning waves-effect"
-                                                   href="{{ route($ParentRouteName.'.director_sales',['id'=>$director->user_id]) }}"
+                                                   href="{{ route($ParentRouteName.'.director_sales',['id'=>$director->id]) }}"
 
                                                    data-toggle="tooltip"
                                                    data-placement="top" title="Sales by director"><i
                                                             class="fas fa-dolly"></i></a>
-
+                                                @endif
                                             </td>
                                         </tr>
                                     <?php $i++;?>
