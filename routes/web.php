@@ -140,6 +140,11 @@ Route::group(['middleware' => 'auth'], function () {
         'as' => 'user.director_sales',
     ]);
 
+    Route::get('/user/director/sales/{id}/pdf', [
+        'uses' => 'UsersController@director_sales_pdf',
+        'as' => 'user.director_sales_pdf',
+    ]);
+
     //    Settings
 
     Route::get('/settings/general', [

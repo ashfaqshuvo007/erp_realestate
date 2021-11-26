@@ -77,9 +77,14 @@ if($director->share === null){
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
+                            <button type="button" class="tip btn btn-primary btn-flat" title="Export Excel" data-original-title="Label Export As Excel" id="btnExport">
+                                <i class="fa fa-excel"></i>
+                                <span class="hidden-sm hidden-xs"> {{ __('Export As Excel') }}</span>
+                            </button>
                         </div>
                             <div class="body table-responsive">
                             <h3>Sales List For : <span>{{ $director->name}}</span> <small class="text-warning">Total Commision: {{ ($share)}}&nbsp;% &nbsp;Director Share: {{$director_share }}&nbsp;% &nbsp; Agent Share: {{$agent_share }} %</small></h3>
+
                                 <table class="table table-hover table-bordered table-sm">
                                     <thead>
                                     <tr>
@@ -137,72 +142,24 @@ if($director->share === null){
     </section>
 
 @stop
-
-@push('include-css')
-    <!-- Wait Me Css -->
-    <link href="{{ asset('public/asset/plugins/waitme/waitMe.css') }}" rel="stylesheet"/>
-
-    <!-- Colorpicker Css -->
-    <link href="{{ asset('public/asset/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css') }}" rel="stylesheet"/>
-
-    <!-- Dropzone Css -->
-    <link href="{{ asset('public/asset/plugins/dropzone/dropzone.css') }}" rel="stylesheet">
-
-    <!-- Multi Select Css -->
-    <link href="{{ asset('public/asset/plugins/multi-select/css/multi-select.css') }}" rel="stylesheet">
-
-    <!-- Bootstrap Spinner Css -->
-    <link href="{{ asset('public/asset/plugins/jquery-spinner/css/bootstrap-spinner.css') }}" rel="stylesheet">
-
-    <!-- Bootstrap Tagsinput Css -->
-    <link href="{{ asset('public/asset/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css') }}" rel="stylesheet">
-
-    <!-- Bootstrap Select Css -->
-    <link href="{{ asset('public/asset/plugins/bootstrap-select/css/bootstrap-select.css') }}" rel="stylesheet"/>
-
-
-@endpush
-
 @push('include-js')
-
-    {{--<script src="{{ asset('public/asset/js/pages/ui/modals.js') }}"></script>--}}
-    <script src="{{ asset('public/asset/plugins/autosize/autosize.js') }}"></script>
-
-    <!-- Moment Plugin Js -->
-    <script src="{{ asset('public/asset/plugins/momentjs/moment.js') }}"></script>
-
-    <!-- Bootstrap Material Datetime Picker Plugin Js -->
-    <script src="{{ asset('public/asset/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}"></script>
-
-    <script src="{{ asset('public/asset/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
-
-    <script src="{{ asset('public/asset/js/pages/forms/basic-form-elements.js') }}"></script>
-    <!-- Autosize Plugin Js -->
-
-
-    <script>
-        @if(Session::has('success'))
-            toastr["success"]('{{ Session::get('success') }}');
-        @endif
-
-                @if(Session::has('error'))
-            toastr["error"]('{{ Session::get('error') }}');
-        @endif
-
-                @if ($errors->any())
-                @foreach ($errors->all() as $error)
-            toastr["error"]('{{ $error }}');
-        @endforeach
-        @endif
-
-
-    </script>
-
-    {{--All datagrid --}}
-    <script src="{{ asset('public/asset/js/dataTable.js')  }}"></script>
-    <script>
-        BaseController.init();
-    </script>
+<script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
+<script>
+$(document).ready(function(){
+    $("#btnExport").click(function() {
+        var d = new Date();
+        var director_name = "{{ $director->name}}";
+        var date = d.getDate();
+        let table = document.getElementsByTagName("table");
+        TableToExcel.convert(table[0], { // html code may contain multiple tables so here we are refering to 1st table tag
+           name: `SalesList-${director_name}-${date}.xlsx`, // fileName you could use any name
+           sheet: {
+              name: `Sales By Director - ${director_name}` // sheetName
+           }
+        });
+    });
+});
+</script>
 @endpush
 
 

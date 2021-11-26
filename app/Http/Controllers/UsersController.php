@@ -9,6 +9,7 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use PDF;
 
 class UsersController extends Controller
 {
@@ -343,5 +344,27 @@ class UsersController extends Controller
         return view($this->parentView . '.director_sales')
             ->with('director', $director)
             ->with('director_sales', $director_sales);
+    }
+
+    public function director_sales_pdf($id)
+    {
+        // dd($id);
+        $director = DB::table('directors')->where('id', $id)->first();
+        $director_sales = DB::table('sells')
+            ->where('sells.director_id', $id)
+            ->get();
+
+        $now = new \DateTime();
+        $date = $now->format(Config('settings.date_format') . ' h:i:s');
+
+        $extra = array(
+            'current_date_time' => $date,
+            'module_name' => 'Director Sales',
+        );
+
+        $pdf = PDF::loadView($this->parentView . '.director_sales_pdf', ['director_sales' => $director_sales, 'director' => $director, 'extra' => $extra])->setPaper('a4', 'landscape');
+        //return $pdf->stream('invoice.pdf');
+        return $pdf->stream($extra['current_date_time'] . '_' . $extra['module_name'] . '.pdf');
+
     }
 }

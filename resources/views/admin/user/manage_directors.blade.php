@@ -102,13 +102,19 @@ $director_sales = \App\Sell::where('director_id', $director->id)->get()->toArray
                                                             class="material-icons">mode_edit</i></a>
 
                                                 @if((count($director_sales) > 0))
-                                                <a class="btn btn-xs btn-warning waves-effect"
-                                                   href="{{ route($ParentRouteName.'.director_sales',['id'=>$director->id]) }}"
+                                                    <a class="btn btn-xs btn-warning waves-effect"
+                                                    href="{{ route($ParentRouteName.'.director_sales',['id'=>$director->id]) }}"
 
-                                                   data-toggle="tooltip"
-                                                   data-placement="top" title="Sales by director"><i
-                                                            class="fas fa-dolly"></i></a>
+                                                    data-toggle="tooltip"
+                                                    data-placement="top" title="Sales by director"><i
+                                                                class="fas fa-dolly"></i></a>
+
+                                                    <a class="btn btn-xs btn-warning waves-effect m-b-3" href="{{ route($ParentRouteName.'.director_sales_pdf',['id'=>$director->id]) }}"
+
+                                                    data-toggle="tooltip" data-placement="top" title="" data-original-title="Director Sales Summary PDF Generator"> <i class="material-icons">picture_as_pdf</i></a>
+
                                                 @endif
+
                                             </td>
                                         </tr>
                                     <?php $i++;?>
@@ -135,72 +141,6 @@ $director_sales = \App\Sell::where('director_id', $director->id)->get()->toArray
 
 @stop
 
-@push('include-css')
-    <!-- Wait Me Css -->
-    <link href="{{ asset('public/asset/plugins/waitme/waitMe.css') }}" rel="stylesheet"/>
-
-    <!-- Colorpicker Css -->
-    <link href="{{ asset('public/asset/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css') }}" rel="stylesheet"/>
-
-    <!-- Dropzone Css -->
-    <link href="{{ asset('public/asset/plugins/dropzone/dropzone.css') }}" rel="stylesheet">
-
-    <!-- Multi Select Css -->
-    <link href="{{ asset('public/asset/plugins/multi-select/css/multi-select.css') }}" rel="stylesheet">
-
-    <!-- Bootstrap Spinner Css -->
-    <link href="{{ asset('public/asset/plugins/jquery-spinner/css/bootstrap-spinner.css') }}" rel="stylesheet">
-
-    <!-- Bootstrap Tagsinput Css -->
-    <link href="{{ asset('public/asset/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css') }}" rel="stylesheet">
-
-    <!-- Bootstrap Select Css -->
-    <link href="{{ asset('public/asset/plugins/bootstrap-select/css/bootstrap-select.css') }}" rel="stylesheet"/>
-
-
-@endpush
-
-@push('include-js')
-
-    {{--<script src="{{ asset('public/asset/js/pages/ui/modals.js') }}"></script>--}}
-    <script src="{{ asset('public/asset/plugins/autosize/autosize.js') }}"></script>
-
-    <!-- Moment Plugin Js -->
-    <script src="{{ asset('public/asset/plugins/momentjs/moment.js') }}"></script>
-
-    <!-- Bootstrap Material Datetime Picker Plugin Js -->
-    <script src="{{ asset('public/asset/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}"></script>
-
-    <script src="{{ asset('public/asset/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
-
-    <script src="{{ asset('public/asset/js/pages/forms/basic-form-elements.js') }}"></script>
-    <!-- Autosize Plugin Js -->
-
-
-    <script>
-        @if(Session::has('success'))
-            toastr["success"]('{{ Session::get('success') }}');
-        @endif
-
-                @if(Session::has('error'))
-            toastr["error"]('{{ Session::get('error') }}');
-        @endif
-
-                @if ($errors->any())
-                @foreach ($errors->all() as $error)
-            toastr["error"]('{{ $error }}');
-        @endforeach
-        @endif
-
-
-    </script>
-
-    {{--All datagrid --}}
-    <script src="{{ asset('public/asset/js/dataTable.js')  }}"></script>
-    <script>
-        BaseController.init();
-    </script>
-@endpush
 
 
 
